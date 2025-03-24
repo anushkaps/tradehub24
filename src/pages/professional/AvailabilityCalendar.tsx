@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Calendar, Clock, ChevronLeft, ChevronRight, Plus, X, Check, AlertCircle } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 interface TimeSlot {
   id: string;
@@ -307,6 +308,10 @@ const AvailabilityCalendar: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <Helmet>
+        <title>Availability Calendar - TradeHub24</title>
+        <meta name="description" content="Manage your availability and schedule on TradeHub24" />
+      </Helmet>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-900 mb-4 md:mb-0">Availability Calendar</h1>
 

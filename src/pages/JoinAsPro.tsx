@@ -1,9 +1,13 @@
-import React from 'react';
-import { CheckCircle2, ArrowRight, Shield, Banknote, Users } from 'lucide-react';
+import { ArrowRight, Shield, Banknote, Users } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 export function JoinAsPro() {
   return (
     <div className="py-12">
+      <Helmet>
+        <title>Join as a Professional - TradeHub24</title>
+        <meta name="description" content="Join TradeHub24 as a professional. Get access to quality leads, grow your business, and connect with homeowners looking for your services." />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Join TradeHub24 as a Professional</h1>

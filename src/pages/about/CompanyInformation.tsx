@@ -1,9 +1,51 @@
-import React from 'react';
 import { Building2, Users, Target, Globe } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 export function CompanyInformation() {
   return (
     <div className="py-12">
+      <Helmet>
+        <title>Company Information - TradeHub24</title>
+        <meta
+          name="description"
+          content="Discover TradeHub24's background, values, and commitment to connecting homeowners with quality trade professionals."
+        />
+        <meta name="keywords" content="company info, tradehub24, about us, background, values" />
+
+        {/* Open Graph */}
+        <meta property="og:title" content="Company Information - TradeHub24" />
+        <meta
+          property="og:description"
+          content="Discover TradeHub24's background, values, and commitment to connecting homeowners with quality trade professionals."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.tradehub24.com/about/company-info" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Company Information - TradeHub24" />
+        <meta
+          name="twitter:description"
+          content="Discover TradeHub24's background, values, and commitment to connecting homeowners with quality trade professionals."
+        />
+
+        {/* JSON-LD */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            name: "Company Information - TradeHub24",
+            url: "https://www.tradehub24.com/about/company-info",
+            description:
+              "Discover TradeHub24's background, values, and commitment to connecting homeowners with quality trade professionals.",
+            publisher: {
+              "@type": "Organization",
+              name: "TradeHub24",
+              url: "https://www.tradehub24.com",
+            },
+          })}
+        </script>
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Company Information</h1>

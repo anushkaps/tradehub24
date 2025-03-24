@@ -1,9 +1,13 @@
-import React from 'react';
 import { Wrench, Zap, Paintbrush, PenTool as Tools, Hammer, Thermometer, Truck, Home, Clock, Shield, Star } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 export function Services() {
   return (
     <div className="py-12">
+      <Helmet>
+        <title>Services - TradeHub24</title>
+        <meta name="description" content="Discover our comprehensive range of home improvement and maintenance services. From plumbing and electrical to painting and renovation - find trusted professionals for all your needs." />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Our Services</h1>

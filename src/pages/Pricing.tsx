@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Check, ArrowRight } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 export function Pricing() {
   // Set the selected plan index. On mount, default to the popular plan if available.
@@ -14,6 +15,10 @@ export function Pricing() {
 
   return (
     <div className="py-12">
+      <Helmet>
+        <title>Pricing Plans - TradeHub24</title>
+        <meta name="description" content="Choose the perfect TradeHub24 membership plan for your business. Flexible pricing options designed to help professionals grow and succeed." />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Simple, Transparent Pricing</h1>

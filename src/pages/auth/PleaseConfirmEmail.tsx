@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
 import { supabase } from '../../services/supabaseClient';
 
 const EMAIL_KEY = 'emailConfirmationAddress';
 const USER_TYPE_KEY = 'userTypeForConfirmation';
 
-const PleaseConfirmEmail: React.FC = () => {
+export function PleaseConfirmEmail() {
   const location = useLocation();
   const navigate = useNavigate();
   
@@ -130,7 +131,11 @@ const PleaseConfirmEmail: React.FC = () => {
   };
   
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50 px-4">
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <Helmet>
+        <title>Confirm Your Email - TradeHub24</title>
+        <meta name="description" content="Please check your email to confirm your TradeHub24 account. Follow the link in your email to complete the registration process." />
+      </Helmet>
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
         <h2 className="text-2xl font-bold mb-4">Almost there!</h2>
         <p className="text-gray-700 mb-6">
@@ -157,6 +162,4 @@ const PleaseConfirmEmail: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export default PleaseConfirmEmail;
+}

@@ -1,11 +1,12 @@
 // src/pages/Messages.tsx
-import React, { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { supabase } from '../services/supabaseClient';
 import { useUser } from '../contexts/UserContext';
 import MessagingInterface from '../components/shared/MessagingInterface'; // If you need this UI
 
-const Messages: React.FC = () => {
+export function Messages() {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -110,6 +111,12 @@ const Messages: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
-export default Messages;
+return (
+  <div className="min-h-screen bg-gray-50">
+    <Helmet>
+      <title>Messages - TradeHub24</title>
+      <meta name="description" content="View and manage your conversations with professionals and homeowners on TradeHub24. Stay connected and communicate effectively with your contacts." />
+    </Helmet>
+    {{ ... }}

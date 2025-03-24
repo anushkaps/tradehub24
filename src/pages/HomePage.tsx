@@ -1,7 +1,7 @@
 // src/pages/HomePage.tsx
-import React from 'react';
 import { Shield, Clock, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import man1Image from '../assets/man-1.png';
 import { useUser } from '../contexts/UserContext'; // <-- Merged user context
 import { ProfessionalHome } from './professional/ProfessionalHome';
@@ -44,6 +44,10 @@ export function HomePage() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <Helmet>
+        <title>TradeHub24 - Find Trusted Home Improvement Professionals</title>
+        <meta name="description" content="Connect with verified professionals for your home improvement projects. Get quotes, read reviews, and hire the best pros in your area." />
+      </Helmet>
       {/* Hero Section */}
       <section
         className="relative bg-[#105298] text-white py-20 flex items-center"

@@ -1,9 +1,13 @@
-import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Lightbulb, PenTool as Tool, Home, Paintbrush } from 'lucide-react';
 
 export function AdviceAndInspiration() {
   return (
     <div className="py-12">
+      <Helmet>
+        <title>Advice & Inspiration - TradeHub24</title>
+        <meta name="description" content="Get expert advice and inspiration for your home improvement projects. Browse our comprehensive guides, tips, and ideas to transform your living space." />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Advice & Inspiration</h1>

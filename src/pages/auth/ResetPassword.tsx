@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { Helmet } from 'react-helmet-async';
 import { supabase } from '../../services/supabaseClient';
 import { Mail } from 'lucide-react';
 import { checkIfEmailExists } from '../../services/emailService';
 
-const ResetPassword: React.FC = () => {
+export function ResetPassword() {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -49,7 +50,11 @@ const ResetPassword: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center px-6 py-12">
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <Helmet>
+        <title>Reset Password - TradeHub24</title>
+        <meta name="description" content="Reset your TradeHub24 account password. Follow the simple steps to securely regain access to your account." />
+      </Helmet>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="text-center text-3xl font-bold text-gray-900">Reset Password</h2>
         <p className="mt-2 text-center text-sm text-gray-600">
@@ -99,5 +104,3 @@ const ResetPassword: React.FC = () => {
     </div>
   );
 };
-
-export default ResetPassword;

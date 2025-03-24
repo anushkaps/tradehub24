@@ -1,12 +1,16 @@
-import React from 'react';
 import { Briefcase, Users, Banknote, Star, Shield, ChevronRight, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import man2Image from '../../assets/man-2.png';
 
 export function ProfessionalHome() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
+      <Helmet>
+        <title>Professional Dashboard - TradeHub24</title>
+        <meta name="description" content="Access your professional dashboard, manage jobs, connect with clients, and grow your business with TradeHub24's professional tools and resources." />
+      </Helmet>
       <section
         className="relative bg-[#105298] text-white py-20 flex items-center"
         style={{ minHeight: '587px' }} // Matches your HomePage's hero size

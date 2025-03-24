@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigation } from './Navigation';
 import { Footer } from './Footer';
 import { ScrollToTop } from './ScrollToTop';
+import { CookieBanner } from './CookieBanner';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -15,7 +16,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <main className="flex-grow">
         {children}
       </main>
+
       <Footer />
+      <CookieBanner/>
     </div>
   );
 }

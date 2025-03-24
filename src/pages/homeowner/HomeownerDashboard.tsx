@@ -1,7 +1,8 @@
 // src/pages/homeowner/HomeownerDashboard.tsx
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { useUser } from '../../contexts/UserContext';
 import { supabase } from '../../services/supabaseClient';
 
@@ -32,7 +33,7 @@ interface RecentMessage {
   };
 }
 
-const HomeownerDashboard: React.FC = () => {
+export function HomeownerDashboard() {
   const { user, profile } = useUser();
   const [stats, setStats] = useState<DashboardStats>({
     totalJobs: 0,
@@ -203,224 +204,230 @@ const HomeownerDashboard: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
-        <div>
-          <h1 className="text-2xl font-bold">
-            Welcome back, {profile?.first_name || 'Homeowner'}
-          </h1>
-          <p className="text-gray-600">
-            Here's what's happening with your projects
-          </p>
-        </div>
-        <div className="mt-4 md:mt-0">
-          <Link
-            to="/homeowner/post-job"
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Post New Job
-          </Link>
-        </div>
-      </div>
-
-      {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-        </div>
-      ) : (
-        <>
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="flex items-center">
-                <div className="p-3 rounded-full bg-blue-100 text-blue-500 mr-4">
-                  <svg
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-gray-500 text-sm">Total Jobs</p>
-                  <p className="text-2xl font-semibold">{stats.totalJobs}</p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="flex items-center">
-                <div className="p-3 rounded-full bg-green-100 text-green-500 mr-4">
-                  <svg
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-gray-500 text-sm">Active Jobs</p>
-                  <p className="text-2xl font-semibold">{stats.activeJobs}</p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="flex items-center">
-                <div className="p-3 rounded-full bg-purple-100 text-purple-500 mr-4">
-                  <svg
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-gray-500 text-sm">Completed Jobs</p>
-                  <p className="text-2xl font-semibold">{stats.completedJobs}</p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="flex items-center">
-                <div className="p-3 rounded-full bg-yellow-100 text-yellow-500 mr-4">
-                  <svg
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-gray-500 text-sm">Pending Bids</p>
-                  <p className="text-2xl font-semibold">{stats.pendingBids}</p>
-                </div>
-              </div>
-            </div>
+    <div className="min-h-screen bg-gray-50">
+      <Helmet>
+        <title>Homeowner Dashboard - TradeHub24</title>
+        <meta name="description" content="Manage your home improvement projects, track job progress, and communicate with professionals all in one place." />
+      </Helmet>
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+          <div>
+            <h1 className="text-2xl font-bold">
+              Welcome back, {profile?.first_name || 'Homeowner'}
+            </h1>
+            <p className="text-gray-600">
+              Here's what's happening with your projects
+            </p>
           </div>
+          <div className="mt-4 md:mt-0">
+            <Link
+              to="/homeowner/post-job"
+              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              Post New Job
+            </Link>
+          </div>
+        </div>
 
-          {/* Recent Jobs */}
-          <div className="bg-white rounded-lg shadow mb-8">
-            <div className="p-6 border-b">
-              <div className="flex justify-between items-center">
-                <h2 className="text-xl font-semibold">Recent Jobs</h2>
-                <Link to="/homeowner/my-jobs" className="text-blue-500 hover:text-blue-700">
-                  View All
-                </Link>
-              </div>
-            </div>
-            <div className="divide-y">
-              {recentJobs.length === 0 ? (
-                <div className="p-6 text-center text-gray-500">
-                  You haven't posted any jobs yet.
-                </div>
-              ) : (
-                recentJobs.map((job) => (
-                  <div key={job.id} className="p-6">
-                    <div className="flex justify-between items-start mb-2">
-                      <Link
-                        to={`/homeowner/job/${job.id}`}
-                        className="text-lg font-medium hover:text-blue-500"
-                      >
-                        {job.title}
-                      </Link>
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusBadgeClass(
-                          job.status
-                        )}`}
-                      >
-                        {job.status.replace('_', ' ')}
-                      </span>
-                    </div>
-                    <div className="flex justify-between text-sm text-gray-500">
-                      <span>Posted on {formatDate(job.created_at)}</span>
-                      <span>{job.bids_count || 0} bids</span>
-                    </div>
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        ) : (
+          <>
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center">
+                  <div className="p-3 rounded-full bg-blue-100 text-blue-500 mr-4">
+                    <svg
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                      />
+                    </svg>
                   </div>
-                ))
-              )}
-            </div>
-          </div>
-
-          {/* Recent Messages */}
-          <div className="bg-white rounded-lg shadow">
-            <div className="p-6 border-b">
-              <div className="flex justify-between items-center">
-                <h2 className="text-xl font-semibold">Recent Messages</h2>
-                <Link to="/messages" className="text-blue-500 hover:text-blue-700">
-                  View All
-                </Link>
+                  <div>
+                    <p className="text-gray-500 text-sm">Total Jobs</p>
+                    <p className="text-2xl font-semibold">{stats.totalJobs}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center">
+                  <div className="p-3 rounded-full bg-green-100 text-green-500 mr-4">
+                    <svg
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-gray-500 text-sm">Active Jobs</p>
+                    <p className="text-2xl font-semibold">{stats.activeJobs}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center">
+                  <div className="p-3 rounded-full bg-purple-100 text-purple-500 mr-4">
+                    <svg
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-gray-500 text-sm">Completed Jobs</p>
+                    <p className="text-2xl font-semibold">{stats.completedJobs}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center">
+                  <div className="p-3 rounded-full bg-yellow-100 text-yellow-500 mr-4">
+                    <svg
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-gray-500 text-sm">Pending Bids</p>
+                    <p className="text-2xl font-semibold">{stats.pendingBids}</p>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="divide-y">
-              {recentMessages.length === 0 ? (
-                <div className="p-6 text-center text-gray-500">
-                  You don't have any messages yet.
+
+            {/* Recent Jobs */}
+            <div className="bg-white rounded-lg shadow mb-8">
+              <div className="p-6 border-b">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl font-semibold">Recent Jobs</h2>
+                  <Link to="/homeowner/my-jobs" className="text-blue-500 hover:text-blue-700">
+                    View All
+                  </Link>
                 </div>
-              ) : (
-                recentMessages.map((message) => (
-                  <div key={message.id} className="p-6">
-                    <div className="flex items-start">
-                      <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center text-white mr-3">
-                        {message.sender.avatar_url ? (
-                          <img
-                            src={message.sender.avatar_url}
-                            alt="Sender"
-                            className="h-10 w-10 rounded-full"
-                          />
-                        ) : (
-                          message.sender.first_name[0]
-                        )}
+              </div>
+              <div className="divide-y">
+                {recentJobs.length === 0 ? (
+                  <div className="p-6 text-center text-gray-500">
+                    You haven't posted any jobs yet.
+                  </div>
+                ) : (
+                  recentJobs.map((job) => (
+                    <div key={job.id} className="p-6">
+                      <div className="flex justify-between items-start mb-2">
+                        <Link
+                          to={`/homeowner/job/${job.id}`}
+                          className="text-lg font-medium hover:text-blue-500"
+                        >
+                          {job.title}
+                        </Link>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusBadgeClass(
+                            job.status
+                          )}`}
+                        >
+                          {job.status.replace('_', ' ')}
+                        </span>
                       </div>
-                      <div className="flex-1">
-                        <div className="flex justify-between items-start mb-1">
-                          <p className="font-medium">
-                            {message.sender.first_name} {message.sender.last_name}
-                          </p>
-                          <span className="text-xs text-gray-500">
-                            {formatDate(message.created_at)}
-                          </span>
+                      <div className="flex justify-between text-sm text-gray-500">
+                        <span>Posted on {formatDate(job.created_at)}</span>
+                        <span>{job.bids_count || 0} bids</span>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            {/* Recent Messages */}
+            <div className="bg-white rounded-lg shadow">
+              <div className="p-6 border-b">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl font-semibold">Recent Messages</h2>
+                  <Link to="/messages" className="text-blue-500 hover:text-blue-700">
+                    View All
+                  </Link>
+                </div>
+              </div>
+              <div className="divide-y">
+                {recentMessages.length === 0 ? (
+                  <div className="p-6 text-center text-gray-500">
+                    You don't have any messages yet.
+                  </div>
+                ) : (
+                  recentMessages.map((message) => (
+                    <div key={message.id} className="p-6">
+                      <div className="flex items-start">
+                        <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center text-white mr-3">
+                          {message.sender.avatar_url ? (
+                            <img
+                              src={message.sender.avatar_url}
+                              alt="Sender"
+                              className="h-10 w-10 rounded-full"
+                            />
+                          ) : (
+                            message.sender.first_name[0]
+                          )}
                         </div>
-                        <p className="text-gray-600 line-clamp-2">
-                          {message.content}
-                        </p>
+                        <div className="flex-1">
+                          <div className="flex justify-between items-start mb-1">
+                            <p className="font-medium">
+                              {message.sender.first_name} {message.sender.last_name}
+                            </p>
+                            <span className="text-xs text-gray-500">
+                              {formatDate(message.created_at)}
+                            </span>
+                          </div>
+                          <p className="text-gray-600 line-clamp-2">
+                            {message.content}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))
-              )}
+                  ))
+                )}
+              </div>
             </div>
-          </div>
-        </>
-      )}
+          </>
+        )}
+      </div>
     </div>
   );
-};
+}
 
 export default HomeownerDashboard;

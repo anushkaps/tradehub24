@@ -1,9 +1,13 @@
-import React from 'react';
 import { BookOpen, Download, FileText, Video } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 export function ProResources() {
   return (
     <div className="py-12">
+      <Helmet>
+        <title>Professional Resources - TradeHub24</title>
+        <meta name="description" content="Access valuable resources, guides, and tools designed to help professionals succeed on TradeHub24. Learn best practices and grow your business." />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Professional Resources</h1>

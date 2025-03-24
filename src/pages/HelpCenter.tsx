@@ -1,9 +1,13 @@
-import React from 'react';
 import { Search, MessageCircle, Phone, Mail } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 export function HelpCenter() {
   return (
     <div className="py-12">
+      <Helmet>
+        <title>Help Center - TradeHub24</title>
+        <meta name="description" content="Get help and support for all your TradeHub24 questions. Find answers to common questions, tutorials, and contact our support team." />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">How Can We Help?</h1>

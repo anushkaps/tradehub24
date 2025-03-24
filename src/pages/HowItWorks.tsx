@@ -1,9 +1,13 @@
-import React from 'react';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 export function HowItWorks() {
   return (
     <div className="py-12">
+      <Helmet>
+        <title>How It Works - TradeHub24</title>
+        <meta name="description" content="Learn how TradeHub24 connects homeowners with trusted professionals. Simple steps to find, hire, and work with the best home improvement experts." />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">

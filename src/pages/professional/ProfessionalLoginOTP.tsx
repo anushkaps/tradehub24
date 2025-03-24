@@ -12,7 +12,7 @@ const ProfessionalLoginOTP: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isCallback = location.pathname.includes('callback');
+  // const isCallback = location.pathname.includes('callback');
 
   useEffect(() => {
     if (location.state?.email) {
@@ -20,37 +20,73 @@ const ProfessionalLoginOTP: React.FC = () => {
     }
   }, [location.state]);
 
-  useEffect(() => {
-    if (isCallback) {
-      setLoading(true);
-      (async () => {
-        try {
-          const hashParams = new URLSearchParams(window.location.hash.substring(1));
-          const accessToken = hashParams.get('access_token');
-          const refreshToken = hashParams.get('refresh_token');
-          if (accessToken && refreshToken) {
-            const { data, error } = await supabase.auth.setSession({
+  // useEffect(() => {
+  //   if (isCallback) {
+  //     setLoading(true);
+  //     (async () => {
+  //       try {
+  //         const hashParams = new URLSearchParams(window.location.hash.substring(1));
+  //         const accessToken = hashParams.get('access_token');
+  //         const refreshToken = hashParams.get('refresh_token');
+  //         if (accessToken && refreshToken) {
+  //           const { data, error } = await supabase.auth.setSession({
+  //             access_token: accessToken,
+  //             refresh_token: refreshToken,
+  //           });
+  //           if (error) throw error;
+
+  //           const { data: { user } } = await supabase.auth.getUser();
+  //           if (user?.user_metadata?.user_type !== 'professional') {
+  //             await supabase.auth.signOut();
+  //             throw new Error('Access denied: you are not a professional');
+  //           }
+  //           setMessage({ type: 'success', text: 'Successfully authenticated! Redirecting...' });
+  //           setTimeout(() => navigate('/professional/dashboard'), 1500);
+  //         }
+  //       } catch (err: any) {
+  //         setMessage({ type: 'error', text: err.message || 'Failed to verify login link' });
+  //       } finally {
+  //         setLoading(false);
+  //       }
+  //     })();
+  //   }
+  // }, [isCallback, navigate]);
+
+    useEffect(() => {
+      const queryParams = new URLSearchParams(window.location.search);
+      const accessToken = queryParams.get('access_token');
+      const refreshToken = queryParams.get('refresh_token');
+    
+      if (accessToken && refreshToken) {
+        (async () => {
+          try {
+            const { error } = await supabase.auth.setSession({
               access_token: accessToken,
               refresh_token: refreshToken,
             });
+    
             if (error) throw error;
-
+    
             const { data: { user } } = await supabase.auth.getUser();
+    
             if (user?.user_metadata?.user_type !== 'professional') {
               await supabase.auth.signOut();
               throw new Error('Access denied: you are not a professional');
             }
+    
             setMessage({ type: 'success', text: 'Successfully authenticated! Redirecting...' });
-            setTimeout(() => navigate('/professional/dashboard'), 1500);
+            // setTimeout(() => navigate('/homeowner/dashboard'), 1500);
+            navigate('/professional/dashboard');
+    
+          } catch (error) {
+            setMessage({ type: 'error', text: (error as Error).message || 'Failed to verify login link' });
+          } finally {
+            setLoading(false);
           }
-        } catch (err: any) {
-          setMessage({ type: 'error', text: err.message || 'Failed to verify login link' });
-        } finally {
-          setLoading(false);
-        }
-      })();
-    }
-  }, [isCallback, navigate]);
+        })();
+      }
+    }, [navigate]);
+    
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,7 +107,7 @@ const ProfessionalLoginOTP: React.FC = () => {
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/professional/login-otp-callback`,
+          emailRedirectTo: `${window.location.origin}/professional/dashboard`,
           data: { user_type: 'professional' },
         },
       });
@@ -84,34 +120,34 @@ const ProfessionalLoginOTP: React.FC = () => {
     }
   };
 
-  if (isCallback) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
-          <div>
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-              Verifying your login
-            </h2>
-          </div>
-          <div className="mt-8 space-y-6">
-            {loading ? (
-              <div className="flex justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
-              </div>
-            ) : message ? (
-              <div
-                className={`rounded-md p-4 ${
-                  message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
-                }`}
-              >
-                {message.text}
-              </div>
-            ) : null}
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // if (isCallback) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  //       <div className="max-w-md w-full space-y-8">
+  //         <div>
+  //           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+  //             Verifying your login
+  //           </h2>
+  //         </div>
+  //         <div className="mt-8 space-y-6">
+  //           {loading ? (
+  //             <div className="flex justify-center">
+  //               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+  //             </div>
+  //           ) : message ? (
+  //             <div
+  //               className={`rounded-md p-4 ${
+  //                 message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
+  //               }`}
+  //             >
+  //               {message.text}
+  //             </div>
+  //           ) : null}
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   // Normal OTP request form
   return (

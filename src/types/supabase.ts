@@ -25,18 +25,22 @@ export interface Profile {
   user_id: string;
   email: string;
   user_type: UserType;
-  full_name: string;
+  first_name: string;
+  last_name: string;
   phone?: string;
   created_at: string;
   updated_at: string;
   email_verified: boolean;
+  postcode?: string;
   // Professional specific fields
   company_name?: string;
-  business_registration_number?: string;
+  business_registration?: string;
   trade?: string;
-  experience_years?: number;
-  license_number?: string;
-  insurance_info?: string;
+  bio?: string;
+  website?: string;
+  years_of_experience?: number;
+  hourly_rate?: number;
+  avatar_url?: string;
   rating?: number;
   total_reviews?: number;
   // Homeowner specific fields

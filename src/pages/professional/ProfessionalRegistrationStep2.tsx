@@ -1,9 +1,12 @@
-// src/pages/professional/ProfessionalRegistrationStep2.tsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../services/supabaseClient';
 import { toast } from 'react-toastify';
 import { useUser } from '../../contexts/UserContext';
+import axios from 'axios';
+import Autocomplete from 'react-google-autocomplete';
+
+const GOOGLE_MAPS_API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY';  // Replace with your API Key
 
 const ProfessionalRegistrationStep2 = () => {
   const navigate = useNavigate();
@@ -17,9 +20,10 @@ const ProfessionalRegistrationStep2 = () => {
     postcode: '',
   });
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
-      // if (!user) return;
       if (!user) return;
       try {
         const { data, error } = await supabase
@@ -43,23 +47,60 @@ const ProfessionalRegistrationStep2 = () => {
     fetchData();
   }, [user]);
 
+  // Handle form changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Handle Google Maps Autocomplete
+  const handlePlaceSelect = (place: any) => {
+    if (place) {
+      const address = place.formatted_address;
+      const city = place.address_components.find((c: any) =>
+        c.types.includes('locality')
+      )?.long_name;
+
+      setFormData((prev) => ({
+        ...prev,
+        address,
+        city: city || prev.city,
+      }));
+    }
+  };
+
+  // UK Postcode Validation
+  const validatePostcode = async (postcode: string) => {
+    try {
+      const res = await axios.get(`https://api.postcodes.io/postcodes/${postcode}/validate`);
+      return res.data.result;
+    } catch (error) {
+      console.error('Postcode validation error:', error);
+      return false;
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) {
       toast.error('User not authenticated');
-      console.log(user)
+      return;
+    }
+
+    setLoading(true);
+
+    // Validate postcode
+    const isValidPostcode = await validatePostcode(formData.postcode);
+    if (!isValidPostcode) {
+      toast.error('Invalid UK postcode');
+      setLoading(false);
       return;
     }
 
     try {
       const { data, error } = await supabase
         .from('professionals')
-        .upsert({
+        .upsert([{
           user_id: user.id,
           company_name: formData.companyName,
           registration_number: formData.registrationNumber,
@@ -67,7 +108,7 @@ const ProfessionalRegistrationStep2 = () => {
           city: formData.city,
           postcode: formData.postcode,
           updated_at: new Date().toISOString(),
-        })
+        }])
         .single();
 
       if (error) throw error;
@@ -75,7 +116,9 @@ const ProfessionalRegistrationStep2 = () => {
       navigate('/professional/registration-step3');
     } catch (err: any) {
       console.error('Error in Step2:', err);
-      toast.error(err.message || 'Failed to save step 2');
+      toast.error('Failed to save step 2');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -103,6 +146,7 @@ const ProfessionalRegistrationStep2 = () => {
                   focus:ring-[#105298] focus:border-[#105298] sm:text-sm"
               />
             </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Registration Number
@@ -116,19 +160,20 @@ const ProfessionalRegistrationStep2 = () => {
                   focus:ring-[#105298] focus:border-[#105298] sm:text-sm"
               />
             </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Address
               </label>
-              <input
-                name="address"
-                type="text"
-                value={formData.address}
-                onChange={handleChange}
+              <Autocomplete
+                apiKey={GOOGLE_MAPS_API_KEY}
+                onPlaceSelected={handlePlaceSelect}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm 
                   focus:ring-[#105298] focus:border-[#105298] sm:text-sm"
+                options={{ types: ['geocode'] }}
               />
             </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 City
@@ -142,6 +187,7 @@ const ProfessionalRegistrationStep2 = () => {
                   focus:ring-[#105298] focus:border-[#105298] sm:text-sm"
               />
             </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Postcode
@@ -163,8 +209,9 @@ const ProfessionalRegistrationStep2 = () => {
                   rounded-md shadow-sm text-sm font-medium text-white bg-[#e20000] 
                   hover:bg-[#cc0000] focus:outline-none focus:ring-2 focus:ring-offset-2 
                   focus:ring-[#105298]"
+                disabled={loading}
               >
-                Next Step
+                {loading ? 'Saving...' : 'Next Step'}
               </button>
             </div>
           </form>

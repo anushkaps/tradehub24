@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Bell, MessageSquare, Briefcase, Star, Settings, ChevronRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { useUser } from '../../contexts/UserContext';
 import { supabase } from '../../services/supabaseClient';
 
@@ -299,176 +300,232 @@ export function ProfessionalDashboard() {
   }
 
   return (
-    <div className="py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Welcome back, {profile?.first_name || 'Professional'}
-          </h1>
-          <p className="text-gray-600">Here's what's happening with your business</p>
-        </div>
+    <div>
+      <Helmet>
+        <title>Professional Dashboard | TradeHub24</title>
+        <meta
+          name="description"
+          content="Manage your trade services, bids, and client interactions from your TradeHub24 professional dashboard."
+        />
+        <meta
+          name="keywords"
+          content="professional dashboard, tradehub24, manage bids"
+        />
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          {statItems.map((stat, index) => (
-            <div key={index} className="bg-white p-6 rounded-lg shadow-md">
-              <div className="flex items-center justify-between mb-4">
-                <div className={`p-2 rounded-lg ${stat.iconBg}`}>{stat.icon}</div>
-                <span className={`text-sm font-medium ${stat.trend.color}`}>{stat.trend.value}</span>
-              </div>
-              <h3 className="text-2xl font-bold">{stat.value}</h3>
-              <p className="text-gray-600">{stat.label}</p>
-            </div>
-          ))}
-        </div>
+        {/* Open Graph */}
+        <meta
+          property="og:title"
+          content="Professional Dashboard | TradeHub24"
+        />
+        <meta
+          property="og:description"
+          content="Manage your trade services, bids, and client interactions from your TradeHub24 professional dashboard."
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:url"
+          content="https://www.tradehub24.com/professional/dashboard"
+        />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Left Column: Job Requests & Messages */}
-          <div className="md:col-span-2">
-            {/* Recent Job Requests */}
-            <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold">Recent Job Requests</h2>
-                <Link
-                  to="/professional/browse-jobs"
-                  className="text-[#105298] hover:text-[#0c3d72] text-sm font-medium"
-                >
-                  View all
-                </Link>
-              </div>
-              <div className="space-y-6">
-                {jobRequests.length === 0 ? (
-                  <div className="text-center text-gray-500 py-4">
-                    No job requests available at the moment.
-                  </div>
-                ) : (
-                  jobRequests.map((job) => (
-                    <div
-                      key={job.id}
-                      className="flex items-center justify-between border-b border-gray-200 pb-4 last:border-0"
-                    >
-                      <div>
-                        <h3 className="font-semibold">{job.title}</h3>
-                        <p className="text-sm text-gray-600">{job.location}</p>
-                        <p className="text-sm text-gray-500">{formatDate(job.created_at)}</p>
-                        <p className="text-sm font-medium">{formatCurrency(job.budget)}</p>
-                      </div>
-                      <div className="flex items-center space-x-4">
-                        <Link
-                          to={`/professional/job/${job.id}`}
-                          className="px-4 py-2 bg-[#105298] text-white rounded-md hover:bg-[#0c3d72]"
-                        >
-                          View Details
-                        </Link>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="Professional Dashboard | TradeHub24"
+        />
+        <meta
+          name="twitter:description"
+          content="Manage your trade services, bids, and client interactions from your TradeHub24 professional dashboard."
+        />
 
-            {/* Recent Messages */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold">Recent Messages</h2>
-                <Link to="/messages" className="text-[#105298] hover:text-[#0c3d72] text-sm font-medium">
-                  View all
-                </Link>
-              </div>
-              <div className="space-y-4">
-                {messages.length === 0 ? (
-                  <div className="text-center text-gray-500 py-4">No messages yet.</div>
-                ) : (
-                  messages.map((message) => (
-                    <div
-                      key={message.id}
-                      className="flex items-center justify-between border-b border-gray-200 pb-4 last:border-0"
-                    >
-                      <div className="flex items-center">
-                        <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-white mr-4">
-                          {message.sender.avatar_url ? (
-                            <img
-                              src={message.sender.avatar_url}
-                              alt={message.sender.first_name}
-                              className="w-10 h-10 rounded-full"
-                            />
-                          ) : (
-                            message.sender.first_name[0]
-                          )}
-                        </div>
-                        <div>
-                          <h3 className="font-semibold">
-                            {message.sender.first_name} {message.sender.last_name}
-                          </h3>
-                          <p className="text-sm text-gray-600">
-                            {message.content.length > 50
-                              ? `${message.content.substring(0, 50)}...`
-                              : message.content}
-                          </p>
-                        </div>
-                      </div>
-                      <span className="text-sm text-gray-500">{formatDate(message.created_at)}</span>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
+        {/* JSON-LD */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            name: "Professional Dashboard | TradeHub24",
+            url: "https://www.tradehub24.com/professional/dashboard",
+            description:
+              "Manage your trade services, bids, and client interactions from your TradeHub24 professional dashboard.",
+            publisher: {
+              "@type": "Organization",
+              name: "TradeHub24",
+              url: "https://www.tradehub24.com",
+            },
+          })}
+        </script>
+      </Helmet>
+      <div className="py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">
+              Welcome back, {profile?.first_name || 'Professional'}
+            </h1>
+            <p className="text-gray-600">Here's what's happening with your business</p>
           </div>
 
-          {/* Right Column: Quick Actions & Reviews */}
-          <div className="space-y-8">
-            {/* Quick Actions */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-bold mb-6">Quick Actions</h2>
-              <div className="space-y-4">
-                {quickActions.map((action, index) => (
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            {statItems.map((stat, index) => (
+              <div key={index} className="bg-white p-6 rounded-lg shadow-md">
+                <div className="flex items-center justify-between mb-4">
+                  <div className={`p-2 rounded-lg ${stat.iconBg}`}>{stat.icon}</div>
+                  <span className={`text-sm font-medium ${stat.trend.color}`}>{stat.trend.value}</span>
+                </div>
+                <h3 className="text-2xl font-bold">{stat.value}</h3>
+                <p className="text-gray-600">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Left Column: Job Requests & Messages */}
+            <div className="md:col-span-2">
+              {/* Recent Job Requests */}
+              <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-xl font-bold">Recent Job Requests</h2>
                   <Link
-                    key={index}
-                    to={action.path}
-                    className="w-full flex items-center justify-between p-4 rounded-lg hover:bg-gray-50"
+                    to="/professional/browse-jobs"
+                    className="text-[#105298] hover:text-[#0c3d72] text-sm font-medium"
                   >
-                    <div className="flex items-center">
-                      {action.icon}
-                      <span className="ml-3 font-medium">{action.label}</span>
-                    </div>
-                    <ChevronRight className="w-5 h-5 text-gray-400" />
+                    View all
                   </Link>
-                ))}
+                </div>
+                <div className="space-y-6">
+                  {jobRequests.length === 0 ? (
+                    <div className="text-center text-gray-500 py-4">
+                      No job requests available at the moment.
+                    </div>
+                  ) : (
+                    jobRequests.map((job) => (
+                      <div
+                        key={job.id}
+                        className="flex items-center justify-between border-b border-gray-200 pb-4 last:border-0"
+                      >
+                        <div>
+                          <h3 className="font-semibold">{job.title}</h3>
+                          <p className="text-sm text-gray-600">{job.location}</p>
+                          <p className="text-sm text-gray-500">{formatDate(job.created_at)}</p>
+                          <p className="text-sm font-medium">{formatCurrency(job.budget)}</p>
+                        </div>
+                        <div className="flex items-center space-x-4">
+                          <Link
+                            to={`/professional/job/${job.id}`}
+                            className="px-4 py-2 bg-[#105298] text-white rounded-md hover:bg-[#0c3d72]"
+                          >
+                            View Details
+                          </Link>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              {/* Recent Messages */}
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-xl font-bold">Recent Messages</h2>
+                  <Link to="/messages" className="text-[#105298] hover:text-[#0c3d72] text-sm font-medium">
+                    View all
+                  </Link>
+                </div>
+                <div className="space-y-4">
+                  {messages.length === 0 ? (
+                    <div className="text-center text-gray-500 py-4">No messages yet.</div>
+                  ) : (
+                    messages.map((message) => (
+                      <div
+                        key={message.id}
+                        className="flex items-center justify-between border-b border-gray-200 pb-4 last:border-0"
+                      >
+                        <div className="flex items-center">
+                          <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-white mr-4">
+                            {message.sender.avatar_url ? (
+                              <img
+                                src={message.sender.avatar_url}
+                                alt={message.sender.first_name}
+                                className="w-10 h-10 rounded-full"
+                              />
+                            ) : (
+                              message.sender.first_name[0]
+                            )}
+                          </div>
+                          <div>
+                            <h3 className="font-semibold">
+                              {message.sender.first_name} {message.sender.last_name}
+                            </h3>
+                            <p className="text-sm text-gray-600">
+                              {message.content.length > 50
+                                ? `${message.content.substring(0, 50)}...`
+                                : message.content}
+                            </p>
+                          </div>
+                        </div>
+                        <span className="text-sm text-gray-500">{formatDate(message.created_at)}</span>
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
             </div>
 
-            {/* Recent Reviews */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-bold mb-6">Recent Reviews</h2>
-              <div className="space-y-4">
-                {reviews.length === 0 ? (
-                  <div className="text-center text-gray-500 py-4">No reviews yet.</div>
-                ) : (
-                  reviews.map((review) => (
-                    <div
-                      key={review.id}
-                      className="border-b border-gray-200 pb-4 last:border-0"
+            {/* Right Column: Quick Actions & Reviews */}
+            <div className="space-y-8">
+              {/* Quick Actions */}
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <h2 className="text-xl font-bold mb-6">Quick Actions</h2>
+                <div className="space-y-4">
+                  {quickActions.map((action, index) => (
+                    <Link
+                      key={index}
+                      to={action.path}
+                      className="w-full flex items-center justify-between p-4 rounded-lg hover:bg-gray-50"
                     >
-                      <div className="flex items-center mb-2">
-                        <div className="flex">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`w-5 h-5 ${
-                                i < review.rating ? 'text-yellow-400' : 'text-gray-300'
-                              }`}
-                            />
-                          ))}
-                        </div>
+                      <div className="flex items-center">
+                        {action.icon}
+                        <span className="ml-3 font-medium">{action.label}</span>
                       </div>
-                      <p className="text-gray-600 text-sm">{review.comment}</p>
-                      <p className="text-gray-500 text-sm mt-2">
-                        {review.homeowner.first_name} {review.homeowner.last_name} •{' '}
-                        {formatDate(review.created_at)}
-                      </p>
-                    </div>
-                  ))
-                )}
+                      <ChevronRight className="w-5 h-5 text-gray-400" />
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Recent Reviews */}
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <h2 className="text-xl font-bold mb-6">Recent Reviews</h2>
+                <div className="space-y-4">
+                  {reviews.length === 0 ? (
+                    <div className="text-center text-gray-500 py-4">No reviews yet.</div>
+                  ) : (
+                    reviews.map((review) => (
+                      <div
+                        key={review.id}
+                        className="border-b border-gray-200 pb-4 last:border-0"
+                      >
+                        <div className="flex items-center mb-2">
+                          <div className="flex">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`w-5 h-5 ${
+                                  i < review.rating ? 'text-yellow-400' : 'text-gray-300'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                        <p className="text-gray-600 text-sm">{review.comment}</p>
+                        <p className="text-gray-500 text-sm mt-2">
+                          {review.homeowner.first_name} {review.homeowner.last_name} •{' '}
+                          {formatDate(review.created_at)}
+                        </p>
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
             </div>
           </div>

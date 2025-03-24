@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { AlertTriangle, FileText, MessageSquare, CheckCircle, X } from 'lucide-react';
-import { Helmet } from "react-helmet-async";
 
 interface DisputeResolutionProps {
   jobId: string;

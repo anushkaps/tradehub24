@@ -1,9 +1,13 @@
-import React from 'react';
 import { DollarSign, Clock, Star, ThumbsUp, MapPin } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 export function RateGuide() {
   return (
     <div className="py-12">
+      <Helmet>
+        <title>Rate Guide - TradeHub24</title>
+        <meta name="description" content="Understand typical rates and pricing for different trade services. Get insights into market rates and factors that influence service costs." />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Rate Guide</h1>

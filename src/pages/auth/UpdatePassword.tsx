@@ -1,13 +1,13 @@
 // src/pages/auth/UpdatePassword.tsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { supabase } from '../../services/supabaseClient';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
-const UpdatePassword: React.FC = () => {
+export function UpdatePassword() {
   const [newPassword, setNewPassword] = useState('');
   const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -35,7 +35,11 @@ const UpdatePassword: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center px-6 py-12">
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <Helmet>
+        <title>Update Password - TradeHub24</title>
+        <meta name="description" content="Update your TradeHub24 account password. Keep your account secure by choosing a strong password." />
+      </Helmet>
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center mb-8">
         <h2 className="text-3xl font-bold text-gray-900">Set New Password</h2>
       </div>
@@ -71,5 +75,3 @@ const UpdatePassword: React.FC = () => {
     </div>
   );
 };
-
-export default UpdatePassword;

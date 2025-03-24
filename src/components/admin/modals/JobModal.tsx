@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { supabase } from "../../../services/supabaseClient";
-import { Helmet } from "react-helmet-async";
 
 interface UserModalProps {
   isOpen: boolean;

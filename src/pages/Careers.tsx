@@ -1,9 +1,13 @@
-import React from 'react';
 import { Briefcase, Heart, Coffee, Zap } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 export function Careers() {
   return (
     <div className="py-12">
+      <Helmet>
+        <title>Careers - TradeHub24</title>
+        <meta name="description" content="Join our team at TradeHub24 and help transform the home improvement industry" />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Join Our Team</h1>

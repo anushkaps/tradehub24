@@ -12,7 +12,7 @@ const HomeownerLoginOTP: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isCallback = location.pathname.includes('dashboard');
+  // const isCallback = location.pathname.includes('login-otp-callback');
 
   // useEffect(() => {
   //   if (location.state?.email) {
@@ -20,48 +20,84 @@ const HomeownerLoginOTP: React.FC = () => {
   //   }
   // }, [location.state]);
 
-  useEffect(() => {
-    if (location.state?.email) {
-      setEmail(location.state.email);
-    }
-    // Handle OTP callback
-    console.log('Is callback:', isCallback);
+  // useEffect(() => {
+  //   // if (location.state?.email) {
+  //   //   setEmail(location.state.email);
+  //   // }
+  //   // Handle OTP callback
+  //   console.log('Is callback:', isCallback);
     
-    if (isCallback) {
-      setLoading(true);
+  //   if (isCallback) {
+  //     setLoading(true);
+  //     (async () => {
+  //       try {
+  //         const hashParams = new URLSearchParams(window.location.hash.substring(1));
+  //         console.log('Hash params:', hashParams);
+  //         const accessToken = hashParams.get('access_token');
+  //         const refreshToken = hashParams.get('refresh_token');
+  //         console.log('Access token:', accessToken);
+  //         console.log('Refresh token:', refreshToken);
+  //         if (accessToken && refreshToken) {
+  //           const { error } = await supabase.auth.setSession({
+  //             access_token: accessToken,
+  //             refresh_token: refreshToken,
+  //           });
+  //           if (error) throw error;
+
+  //           //Check user type
+  //           const { data: { user } } = await supabase.auth.getUser();
+  //           console.log('User data:', user);
+  //           if (user?.user_metadata?.user_type !== 'homeowner') {
+  //             await supabase.auth.signOut();
+  //             throw new Error('Access denied: you are not a homeowner');
+  //           }
+  //           setMessage({ type: 'success', text: 'Successfully authenticated! Redirecting...' });
+  //           setTimeout(() => navigate('/homeowner/dashboard'), 1500);
+  //         }
+  //       } catch (err: any) {
+  //         setMessage({ type: 'error', text: err.message || 'Failed to verify login link' });
+  //       } finally {
+  //         setLoading(false);
+  //       }
+  //     })();
+  //   }
+  // }, [isCallback, navigate,location.state]);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const accessToken = queryParams.get('access_token');
+    const refreshToken = queryParams.get('refresh_token');
+  
+    if (accessToken && refreshToken) {
       (async () => {
         try {
-          const hashParams = new URLSearchParams(window.location.hash.substring(1));
-          console.log('Hash params:', hashParams);
-          const accessToken = hashParams.get('access_token');
-          const refreshToken = hashParams.get('refresh_token');
-          console.log('Access token:', accessToken);
-          console.log('Refresh token:', refreshToken);
-          if (accessToken && refreshToken) {
-            const { error } = await supabase.auth.setSession({
-              access_token: accessToken,
-              refresh_token: refreshToken,
-            });
-            if (error) throw error;
-
-            //Check user type
-            const { data: { user } } = await supabase.auth.getUser();
-            console.log('User data:', user);
-            if (user?.user_metadata?.user_type !== 'homeowner') {
-              await supabase.auth.signOut();
-              throw new Error('Access denied: you are not a homeowner');
-            }
-            setMessage({ type: 'success', text: 'Successfully authenticated! Redirecting...' });
-            setTimeout(() => navigate('/homeowner/dashboard'), 1500);
+          const { error } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          });
+  
+          if (error) throw error;
+  
+          const { data: { user } } = await supabase.auth.getUser();
+  
+          if (user?.user_metadata?.user_type !== 'homeowner') {
+            await supabase.auth.signOut();
+            throw new Error('Access denied: you are not a homeowner');
           }
-        } catch (err: any) {
-          setMessage({ type: 'error', text: err.message || 'Failed to verify login link' });
+  
+          setMessage({ type: 'success', text: 'Successfully authenticated! Redirecting...' });
+          // setTimeout(() => navigate('/homeowner/dashboard'), 1500);
+          navigate('/homeowner/dashboard');
+  
+        } catch (error) {
+          setMessage({ type: 'error', text: (error as Error).message || 'Failed to verify login link' });
         } finally {
           setLoading(false);
         }
       })();
     }
-  }, [isCallback, navigate,location.state]);
+  }, [navigate]);
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,35 +133,35 @@ const HomeownerLoginOTP: React.FC = () => {
     }
   };
 
-  if (isCallback) {
-    // Show verifying screen
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
-          <div>
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-              Verifying your login
-            </h2>
-          </div>
-          <div className="mt-8 space-y-6">
-            {loading ? (
-              <div className="flex justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
-              </div>
-            ) : message ? (
-              <div
-                className={`rounded-md p-4 ${
-                  message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
-                }`}
-              >
-                {message.text}
-              </div>
-            ) : null}
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // if (isCallback) {
+  //   // Show verifying screen
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+  //       <div className="max-w-md w-full space-y-8">
+  //         <div>
+  //           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+  //             Verifying your login
+  //           </h2>
+  //         </div>
+  //         <div className="mt-8 space-y-6">
+  //           {loading ? (
+  //             <div className="flex justify-center">
+  //               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+  //             </div>
+  //           ) : message ? (
+  //             <div
+  //               className={`rounded-md p-4 ${
+  //                 message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
+  //               }`}
+  //             >
+  //               {message.text}
+  //             </div>
+  //           ) : null}
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   // Normal OTP request form
   return (

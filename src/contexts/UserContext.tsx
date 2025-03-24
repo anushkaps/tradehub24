@@ -18,6 +18,21 @@ export interface UserProfile {
   postcode?: string;
   created_at?: string;
   updated_at?: string;
+  // Professional specific fields
+  company_name?: string;
+  business_registration?: string;
+  trade?: string;
+  bio?: string;
+  website?: string;
+  years_of_experience?: number;
+  hourly_rate?: number;
+  avatar_url?: string;
+  rating?: number;
+  total_reviews?: number;
+  // Homeowner specific fields
+  preferred_contact?: 'email' | 'phone';
+  address?: string;
+  project_history?: string[];
 }
 
 // Type aliases for Supabase queries.

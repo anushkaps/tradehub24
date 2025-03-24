@@ -1,9 +1,13 @@
-import React from 'react';
 import { Search, HelpCircle } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 export function HelpAndFAQ() {
   return (
     <div className="py-12">
+      <Helmet>
+        <title>Help & FAQ - TradeHub24</title>
+        <meta name="description" content="Find answers to frequently asked questions about TradeHub24. Get help with your account, services, and common platform features." />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Help & FAQ</h1>

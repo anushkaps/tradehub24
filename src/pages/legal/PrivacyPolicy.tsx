@@ -1,9 +1,13 @@
-import React from 'react';
 import { Lock } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 export function PrivacyPolicy() {
   return (
     <div className="py-12">
+      <Helmet>
+        <title>Privacy Policy - TradeHub24</title>
+        <meta name="description" content="Learn how TradeHub24 protects and handles your personal information. Our privacy policy explains our data collection, usage, and protection practices." />
+      </Helmet>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <Lock className="w-16 h-16 text-[#105298] mx-auto mb-4" />

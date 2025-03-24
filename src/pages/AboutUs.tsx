@@ -1,9 +1,13 @@
-import React from 'react';
 import { Users, Shield, Target, Globe } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 export function AboutUs() {
   return (
     <div className="py-12">
+      <Helmet>
+        <title>About Us - TradeHub24</title>
+        <meta name="description" content="Learn about TradeHub24 - Connecting homeowners with trusted professionals since 2020" />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">About TradeHub24</h1>

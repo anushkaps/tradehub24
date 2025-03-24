@@ -1,8 +1,12 @@
-import React from 'react';
+import { Helmet } from 'react-helmet-async';
 
 export function ContactUs() {
   return (
     <div className="py-12">
+      <Helmet>
+        <title>Contact Us - TradeHub24</title>
+        <meta name="description" content="Get in touch with TradeHub24. We're here to help with any questions you may have." />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Contact Us</h1>

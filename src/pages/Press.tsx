@@ -1,9 +1,13 @@
-import React from 'react';
 import { Newspaper, Download } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 export function Press() {
   return (
     <div className="py-12">
+      <Helmet>
+        <title>Press & Media - TradeHub24</title>
+        <meta name="description" content="Stay updated with the latest news, press releases, and media coverage about TradeHub24. Access our media kit and company information." />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Press & Media</h1>

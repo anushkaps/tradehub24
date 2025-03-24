@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { supabase } from '../../services/supabaseClient';
 import { toast } from 'react-toastify';
 
-export const VerifyEmail: React.FC = () => {
+export function VerifyEmail() {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -31,6 +32,10 @@ export const VerifyEmail: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <Helmet>
+        <title>Verify Email - TradeHub24</title>
+        <meta name="description" content="Verify your email address to complete your TradeHub24 account registration. Check your inbox for the verification link." />
+      </Helmet>
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
@@ -86,4 +91,4 @@ export const VerifyEmail: React.FC = () => {
       </div>
     </div>
   );
-};
+}
