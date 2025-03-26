@@ -28,11 +28,21 @@ const ProfessionalSignUp = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const validateUKPostcode = (postcode: string) => {
+    const pattern = /^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/i;
+    return pattern.test(postcode);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
       toast.error('Passwords do not match');
+      return;
+    }
+
+    if (!validateUKPostcode(formData.postcode)) {
+      toast.error('Invalid UK postcode');
       return;
     }
 

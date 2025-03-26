@@ -1,35 +1,38 @@
 // src/components/Navigation.tsx
-import React, { useState } from 'react';
-import { Menu, X, User, LogOut } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import logoImage from '../assets/logo-image.png';
-import logoName from '../assets/logo-name.png';
-import { useUser } from '../contexts/UserContext';
+import React, { useState } from "react";
+import { Menu, X, User, LogOut } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import logoImage from "../assets/logo-image.png";
+import logoName from "../assets/logo-name.png";
+import { useUser } from "../contexts/UserContext";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const { userType, setUserType, isAuthenticated, signOut } = useUser();
   const navigate = useNavigate();
 
-  const currentUserType = userType || 'homeowner';
+  const currentUserType = userType || "homeowner";
 
-  const handleUserTypeChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedType = e.target.value as 'homeowner' | 'professional';
+  const handleUserTypeChange = async (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const selectedType = e.target.value as "homeowner" | "professional";
     await setUserType(selectedType);
-    navigate('/');
+    navigate("/");
     setIsOpen(false);
   };
 
   const handleLogout = async () => {
     try {
       await signOut();
-      navigate('/');
+      window.location.reload();
+      navigate("/");
       isAuthenticated === false;
-      toast.success('Successfully logged out');
+      toast.success("Successfully logged out");
     } catch (error) {
-      console.error('Error logging out:', error);
-      toast.error('Failed to log out');
+      console.error("Error logging out:", error);
+      toast.error("Failed to log out");
     }
   };
 
@@ -47,27 +50,45 @@ export function Navigation() {
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-8">
-            {currentUserType === 'homeowner' ? (
+            {currentUserType === "homeowner" ? (
               <>
-                <Link to="/how-it-works" className="text-gray-700 hover:text-[#105298]">
+                <Link
+                  to="/how-it-works"
+                  className="text-gray-700 hover:text-[#105298]"
+                >
                   How It Works
                 </Link>
-                <Link to="/services" className="text-gray-700 hover:text-[#105298]">
+                <Link
+                  to="/services"
+                  className="text-gray-700 hover:text-[#105298]"
+                >
                   Services
                 </Link>
-                <Link to="/find-pros" className="text-gray-700 hover:text-[#105298]">
+                <Link
+                  to="/find-pros"
+                  className="text-gray-700 hover:text-[#105298]"
+                >
                   Find Pros
                 </Link>
               </>
             ) : (
               <>
-                <Link to="/professional/how-it-works" className="text-gray-700 hover:text-[#105298]">
+                <Link
+                  to="/professional/how-it-works"
+                  className="text-gray-700 hover:text-[#105298]"
+                >
                   How It Works
                 </Link>
-                <Link to="/professional/find-jobs" className="text-gray-700 hover:text-[#105298]">
+                <Link
+                  to="/professional/find-jobs"
+                  className="text-gray-700 hover:text-[#105298]"
+                >
                   Find Jobs
                 </Link>
-                <Link to="/professional/membership" className="text-gray-700 hover:text-[#105298]">
+                <Link
+                  to="/professional/membership"
+                  className="text-gray-700 hover:text-[#105298]"
+                >
                   Membership
                 </Link>
               </>
@@ -80,6 +101,12 @@ export function Navigation() {
                   className="text-gray-700 hover:text-[#105298]"
                 >
                   Dashboard
+                </Link>
+                <Link
+                  to={`/${currentUserType}/profile`}
+                  className="text-gray-700 hover:text-[#105298]"
+                >
+                  {currentUserType === "homeowner" ? "Profile" : "Profile"}
                 </Link>
                 <button
                   onClick={handleLogout}
@@ -121,7 +148,11 @@ export function Navigation() {
               onClick={() => setIsOpen(!isOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-700"
             >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </button>
           </div>
         </div>
@@ -145,24 +176,24 @@ export function Navigation() {
               </div>
             )}
 
-            {currentUserType === 'homeowner' ? (
+            {currentUserType === "homeowner" ? (
               <>
-                <Link 
-                  to="/how-it-works" 
+                <Link
+                  to="/how-it-works"
                   className="block px-3 py-2 text-gray-700 hover:bg-gray-50"
                   onClick={() => setIsOpen(false)}
                 >
                   How It Works
                 </Link>
-                <Link 
-                  to="/services" 
+                <Link
+                  to="/services"
                   className="block px-3 py-2 text-gray-700 hover:bg-gray-50"
                   onClick={() => setIsOpen(false)}
                 >
                   Services
                 </Link>
-                <Link 
-                  to="/find-pros" 
+                <Link
+                  to="/find-pros"
                   className="block px-3 py-2 text-gray-700 hover:bg-gray-50"
                   onClick={() => setIsOpen(false)}
                 >
@@ -171,22 +202,22 @@ export function Navigation() {
               </>
             ) : (
               <>
-                <Link 
-                  to="/professional/how-it-works" 
+                <Link
+                  to="/professional/how-it-works"
                   className="block px-3 py-2 text-gray-700 hover:bg-gray-50"
                   onClick={() => setIsOpen(false)}
                 >
                   How It Works
                 </Link>
-                <Link 
-                  to="/professional/find-jobs" 
+                <Link
+                  to="/professional/find-jobs"
                   className="block px-3 py-2 text-gray-700 hover:bg-gray-50"
                   onClick={() => setIsOpen(false)}
                 >
                   Find Jobs
                 </Link>
-                <Link 
-                  to="/professional/membership" 
+                <Link
+                  to="/professional/membership"
                   className="block px-3 py-2 text-gray-700 hover:bg-gray-50"
                   onClick={() => setIsOpen(false)}
                 >
@@ -203,6 +234,15 @@ export function Navigation() {
                   onClick={() => setIsOpen(false)}
                 >
                   Dashboard
+                </Link>
+                <Link
+                  to={`/${currentUserType}/profile`}
+                  className="block px-3 py-2 text-gray-700 hover:bg-gray-50"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {currentUserType === "homeowner"
+                    ? "Homeowner Profile"
+                    : "Professional Profile"}
                 </Link>
                 <button
                   onClick={handleLogout}
@@ -241,4 +281,3 @@ export function Navigation() {
     </nav>
   );
 }
-

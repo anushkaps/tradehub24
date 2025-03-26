@@ -167,6 +167,7 @@ const createProfile = async (
 // Helper: Fetch profile from the profiles table.
 const fetchProfile = async (userId: string): Promise<UserProfile | null> => {
   console.log('fetchProfile called with userId:', userId);
+  localStorage.setItem('user_id', userId);
   try {
     const { data, error } = await supabase
       .from('profiles')
@@ -186,6 +187,51 @@ const fetchProfile = async (userId: string): Promise<UserProfile | null> => {
     return null;
   }
 };
+
+// const fetchProfile = async (userId: string): Promise<UserProfile | null> => {
+//   console.log('Fetching profile...');
+
+//   try {
+//     // Ensure the session is restored before fetching the profile
+//     const { data: { user }, error: sessionError } = await supabase.auth.getUser();
+    
+//     if (sessionError) {
+//       console.error('Error fetching session:', sessionError);
+//       return null;
+//     }
+
+//     if (!user) {
+//       console.warn('No user found, returning null');
+//       return null;
+//     }
+
+//     console.log('User found:', user);
+
+//     const { data, error } = await supabase
+//       .from('profiles')
+//       .select('*')
+//       .eq('id', user.id)
+//       .single();
+
+//     if (error) {
+//       console.error('Error fetching profile:', error.message || error);
+//       return null;
+//     }
+
+//     if (!data) {
+//       console.warn(`No profile found for userId: ${user.id}`);
+//       return null;
+//     }
+
+//     console.log('Profile fetched:', data);
+//     return data as UserProfile;
+//   } catch (err: any) {
+//     console.error('Unexpected error:', err.message || err);
+//     return null;
+//   }
+// };
+
+
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
@@ -448,6 +494,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       
       if (data.user) {
         console.log('User signed in:', data.user.id);
+        localStorage.setItem('user_id', data.user.id);
         let prof = await fetchProfile(data.user.id);
         
         if (!prof) {
@@ -601,7 +648,11 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     try {
       setLoading(true);
       console.log('Signing out user');
+      localStorage.removeItem('sb-ewfhwbpmhfpzknnbotdm-auth-token');
+      localStorage.removeItem('user_id');
+      localStorage.removeItem('lastUserType');
       const { error } = await supabase.auth.signOut();
+      window.location.reload();
       if (error) throw error;
       setUser(null);
       setProfile(null);

@@ -131,7 +131,7 @@ export function PleaseConfirmEmail() {
   };
   
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center py-12 sm:px-6 lg:px-8">
       <Helmet>
         <title>Confirm Your Email - TradeHub24</title>
         <meta name="description" content="Please check your email to confirm your TradeHub24 account. Follow the link in your email to complete the registration process." />

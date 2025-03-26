@@ -43,19 +43,22 @@ export function HomeownerDashboard() {
   });
   const [recentJobs, setRecentJobs] = useState<RecentJob[]>([]);
   const [recentMessages, setRecentMessages] = useState<RecentMessage[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!user) return;
+    const userId = localStorage.getItem('user_id');
+    console.log("UserId: "+userId)
+    if (!userId) return;
+    // if (!profile) return;
 
     const fetchDashboardData = async () => {
-      setLoading(true);
+      setLoading(false);
       try {
         // 1. Fetch all jobs for stats
         const { data: jobsData, error: jobsError } = await supabase
           .from('jobs')
           .select('id, status')
-          .eq('homeowner_id', user.id);
+          .eq('homeowner_id', userId);
 
         if (jobsError) throw jobsError;
 
@@ -96,7 +99,7 @@ export function HomeownerDashboard() {
             created_at,
             bids(count)
           `)
-          .eq('homeowner_id', user.id)
+          .eq('homeowner_id', userId)
           .order('created_at', { ascending: false })
           .limit(5);
 
@@ -147,7 +150,7 @@ export function HomeownerDashboard() {
             content,
             created_at
           `)
-          .eq('receiver_id', user.id)
+          .eq('receiver_id', userId)
           .order('created_at', { ascending: false })
           .limit(5);
 

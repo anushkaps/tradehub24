@@ -415,17 +415,17 @@ function App() {
                 <Route
                   path="/professional/registration-step3"
                   element={
-                    <ProtectedRoute requiredUserType="professional" redirectTo="/professional/signup">
+                    // <ProtectedRoute requiredUserType="professional" redirectTo="/professional/signup">
                       <ProfessionalRegistrationStep3 />
-                    </ProtectedRoute>
+                    // </ProtectedRoute>
                   }
                 />
                 <Route
                   path="/professional/registration-step4"
                   element={
-                    <ProtectedRoute requiredUserType="professional" redirectTo="/professional/signup">
+                    // <ProtectedRoute requiredUserType="professional" redirectTo="/professional/signup">
                       <ProfessionalRegistrationStep4 />
-                    </ProtectedRoute>
+                    // </ProtectedRoute>
                   }
                 />
 

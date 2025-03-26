@@ -104,7 +104,7 @@ const ProfessionalRegistrationStep2 = () => {
           user_id: user.id,
           company_name: formData.companyName,
           registration_number: formData.registrationNumber,
-          address: formData.address,
+          // address: formData.address,
           city: formData.city,
           postcode: formData.postcode,
           updated_at: new Date().toISOString(),
@@ -161,18 +161,18 @@ const ProfessionalRegistrationStep2 = () => {
               />
             </div>
 
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-gray-700">
                 Address
               </label>
-              <Autocomplete
+              {<Autocomplete
                 apiKey={GOOGLE_MAPS_API_KEY}
                 onPlaceSelected={handlePlaceSelect}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm 
                   focus:ring-[#105298] focus:border-[#105298] sm:text-sm"
                 options={{ types: ['geocode'] }}
-              />
-            </div>
+              /> }
+            </div> */}
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
